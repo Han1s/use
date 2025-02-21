@@ -1,28 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import LoadingSpinner from "./LoadingSpinner";
+import { useState, use } from "react";
 import Card from "./Card";
 
-const Messages = ({ fetchMessage }: { fetchMessage: Promise<{title: string, body: string}[]> }) => {
-  const [cards, setCards] = useState<{ title: string; body: string }[]>([]);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  fetchMessage
-    .then((res) => {
-      setCards(res);
-    })
-    .catch((e) => {
-      setErrorMessage(e);
-    });
-
-  if (!cards.length && !errorMessage) {
-    return <LoadingSpinner />;
-  }
-
-  if (errorMessage) {
-    return <div className="text-red-500">{errorMessage}</div>;
-  }
+const Messages = ({
+  fetchMessage,
+}: {
+  fetchMessage: Promise<{ title: string; body: string }[]>;
+}) => {
+  const cards = use(fetchMessage);
 
   return (
     <div className="flex-col gap-4 flex">
